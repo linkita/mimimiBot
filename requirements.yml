@@ -1,0 +1,6 @@
+---
+- src: carlosbuenosvinos.ansistrano-deploy
+  version: 2.3.0
+
+- src: carlosbuenosvinos.ansistrano-rollback
+  version: 2.0.0

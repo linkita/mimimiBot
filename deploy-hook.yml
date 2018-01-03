@@ -1,0 +1,5 @@
+---
+- name: Composer install
+  shell: composer install --optimize-autoloader --no-dev --classmap-authoritative
+  args:
+    chdir: "{{ ansistrano_release_path.stdout }}"
