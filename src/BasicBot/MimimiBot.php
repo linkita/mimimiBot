@@ -6,7 +6,7 @@ use Telegram;
 
 class MimimiBot
 {
-    private const RESPONSE_FREQUENCY = 100;
+    private const RESPONSE_FREQUENCY = 1000;
 
     /** @var Telegram */
     private $telegram;
@@ -31,9 +31,10 @@ class MimimiBot
     {
         $chatId = $this->telegram->ChatID();
 
-        $rawMessage = $this->telegram->Text();
-        $data = preg_replace('|[aeiou]|', 'i', $rawMessage);
-        $data = preg_replace('|[AEIOU]|', 'I', $data);
+        $data = $this->telegram->Text();
+        $data = preg_replace('|[aeou]|', 'i', $data);
+        $data = preg_replace('|[AEOU]|', 'I', $data);
+        $data = preg_replace('|[áéóúÁÉÓÚÍ]+|', 'í', $data);
 
         $content = array('chat_id' => $chatId, 'text' => $data);
         $this->telegram->sendMessage($content);
@@ -41,7 +42,7 @@ class MimimiBot
 
     private function isTimeToTalk()
     {
-        $rand = rand(0, 100);
-        return $rand > 100 - self::RESPONSE_FREQUENCY;
+        $rand = rand(0, 1000);
+        return $rand > 1000 - self::RESPONSE_FREQUENCY;
     }
 }

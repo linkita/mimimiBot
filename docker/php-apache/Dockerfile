@@ -45,17 +45,15 @@ RUN apt-get update \
 && apt-get update \
 && apt-get install -y python-certbot-apache
 
-COPY ./certs /etc/ssl/certs
-
 COPY ./configs/apache2.conf ${APACHE_CONF_DIR}/apache2.conf
-COPY ./configs/app.conf ${APACHE_CONF_DIR}/sites-enabled/app.conf
-#COPY ./configs/default-ssl.conf ${APACHE_CONF_DIR}/sites-available/default-ssl.conf
+#COPY ./configs/app.conf ${APACHE_CONF_DIR}/sites-enabled/app.conf
+COPY ./configs/default-ssl.conf ${APACHE_CONF_DIR}/sites-available/default-ssl.conf
 COPY ./configs/php.ini  ${PHP_CONF_DIR}/apache2/conf.d/custom.ini
 
-#RUN a2enmod ssl \
-#    && a2enmod headers \
-#    && a2ensite default-ssl \
-#    && apache2ctl configtest
+RUN a2enmod ssl \
+    && a2enmod headers \
+    && a2ensite default-ssl \
+    && apache2ctl configtest
 
 WORKDIR /var/www/mimimibot/
 
