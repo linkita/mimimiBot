@@ -20,11 +20,11 @@ class MimimiBot
         $this->telegram = $telegram;
     }
 
-    public function run(){
-
-       if ($this->isTimeToTalk()) {
-           $this->mimimi();
-       }
+    public function run()
+    {
+        if ($this->isTimeToTalk()) {
+            $this->mimimi();
+        }
     }
 
     private function mimimi()
@@ -43,6 +43,7 @@ class MimimiBot
     private function isTimeToTalk()
     {
         $rand = rand(0, 1000);
+
         return $rand > 1000 - self::RESPONSE_FREQUENCY;
     }
 }
