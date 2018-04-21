@@ -8,8 +8,14 @@ class MimimiBot
 {
     private const RESPONSE_FREQUENCY = 1000;
 
+    private const PING_MESSAGE = 'mimimimi';
+
     /** @var Telegram */
     private $telegram;
+
+    private $chatId;
+
+    private $message;
 
     /**
      * MimimiBot constructor.
@@ -18,6 +24,9 @@ class MimimiBot
     public function __construct(Telegram $telegram)
     {
         $this->telegram = $telegram;
+        $this->chatId = $telegram->ChatID();
+        $this->message = $telegram->Text();
+
     }
 
     public function run(): void
@@ -29,9 +38,7 @@ class MimimiBot
 
     private function mimimi(): void
     {
-        $chatId = $this->telegram->ChatID();
-
-        $originalText = $this->telegram->Text();
+        $originalText = $this->message;
         $modifiedText = preg_replace('/[aeou]/', 'i', $originalText);
         $modifiedText = preg_replace('/[AEOU]/', 'I', $modifiedText);
         $modifiedText = preg_replace('/[áéóú]/u', 'í', $modifiedText);
@@ -45,12 +52,14 @@ class MimimiBot
             return;
         }
 
-        $content = ['chat_id' => $chatId, 'text' => $modifiedText];
+        $content = ['chat_id' => $this->chatId, 'text' => $modifiedText];
         $this->telegram->sendMessage($content);
     }
 
     private function isTimeToTalk(): bool
     {
+        if ($this->message === self::PING_MESSAGE) return true;
+
         $rand = random_int(0, 1000);
 
         return $rand > 1000 - self::RESPONSE_FREQUENCY;
